@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Училищен вестник – Йордан Йовков</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #5B4FFF;
+            --secondary: #8B5CF6;
+            --accent: #A78BFA;
+            --dark: #0F172A;
+            --light: #F1F5F9;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #5B4FFF 0%, #8B5CF6 50%, #A78BFA 100%);
+            --gradient-3: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #4facfe);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(180deg, #F1F5F9 0%, #E2E8F0 100%);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Shapes */
+        .bg-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--gradient-2);
+            opacity: 0.05;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        .shape:nth-child(3) {
+            width: 250px;
+            height: 250px;
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(50px, 50px) rotate(90deg); }
+            50% { transform: translate(0, 100px) rotate(180deg); }
+            75% { transform: translate(-50px, 50px) rotate(270deg); }
+        }
+
+        /* 3D Navbar */
+        .navbar {
+            background: transparent;
+            padding: 2rem;
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+            perspective: 1000px;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            transform-style: preserve-3d;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-menu li {
+            transform-style: preserve-3d;
+        }
+
+        .nav-menu a {
+            display: block;
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 700;
+            padding: 1rem 2rem;
+            background: var(--gradient-2);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            transform-style: preserve-3d;
+            box-shadow: 
+                0 10px 20px rgba(91, 79, 255, 0.3),
+                inset 0 -4px 8px rgba(0, 0, 0, 0.2),
+                inset 0 4px 8px rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-menu a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .nav-menu a:hover::before {
+            opacity: 1;
+        }
+
+        .nav-menu a:hover {
+            transform: translateY(-8px) rotateX(10deg);
+            box-shadow: 
+                0 20px 40px rgba(91, 79, 255, 0.5),
+                inset 0 -6px 12px rgba(0, 0, 0, 0.3),
+                inset 0 6px 12px rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-menu a:active {
+            transform: translateY(-2px) rotateX(5deg);
+            box-shadow: 
+                0 5px 15px rgba(91, 79, 255, 0.4),
+                inset 0 -2px 6px rgba(0, 0, 0, 0.3),
+                inset 0 2px 6px rgba(255, 255, 255, 0.3);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            padding: 1rem;
+            background: var(--gradient-2);
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(91, 79, 255, 0.3);
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 3px;
+            background: var(--white);
+            transition: 0.3s;
+            border-radius: 3px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-3);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: var(--white);
+            padding: 10rem 2rem 8rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease;
+            font-weight: 900;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s 0.2s backwards;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-decorative {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            background: rgba(255,255,255,0.1);
+            animation: morphing 10s ease-in-out infinite;
+        }
+
+        .hero-decorative:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .hero-decorative:nth-child(2) {
+            bottom: 15%;
+            right: 8%;
+            animation-delay: 3s;
+        }
+
+        @keyframes morphing {
+            0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+            75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #64748B;
+            font-weight: 400;
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .news-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 0;
+            box-shadow: 0 10px 40px rgba(91, 79, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .news-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: var(--gradient-2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .news-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .news-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(91, 79, 255, 0.25);
+        }
+
+        .news-card-content {
+            padding: 2.5rem;
+        }
+
+        .news-date {
+            display: inline-block;
+            background: var(--gradient-2);
+            color: var(--white);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(91, 79, 255, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .news-card h3 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.6rem;
+            font-weight: 800;
+            line-height: 1.3;
+            transition: all 0.3s;
+        }
+
+        .news-card:hover h3 {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .news-card p {
+            color: #64748B;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        /* Popup Modal */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            background: var(--white);
+            border-radius: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 3rem;
+            position: relative;
+            transform: scale(0.8) translateY(50px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 30px 90px rgba(91, 79, 255, 0.4);
+        }
+
+        .popup-overlay.active .popup-content {
+            transform: scale(1) translateY(0);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 45px;
+            height: 45px;
+            background: var(--gradient-2);
+            border: none;
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 1.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(91, 79, 255, 0.4);
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .popup-close:hover {
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 8px 30px rgba(91, 79, 255, 0.6);
+        }
+
+        .popup-date {
+            display: inline-block;
+            background: var(--gradient-2);
+            color: var(--white);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .popup-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .popup-text {
+            color: #64748B;
+            line-height: 1.9;
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .popup-details {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 2rem;
+        }
+
+        .popup-details h4 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .popup-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .popup-details li {
+            color: #64748B;
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .popup-details li::before {
+            content: '●';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Team Grid with Swing Animation */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .team-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 3.5rem 2.5rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(91, 79, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            animation: swing 3s ease-in-out infinite;
+        }
+
+        .team-card:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .team-card:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .team-card:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes swing {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(3deg);
+            }
+            75% {
+                transform: rotate(-3deg);
+            }
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.5s;
+            transform: rotate(45deg);
+        }
+
+        .team-card:hover {
+            animation: none;
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(91, 79, 255, 0.25);
+        }
+
+        .team-card:hover::before {
+            opacity: 0.08;
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            background: var(--gradient-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--white);
+            font-weight: 900;
+            box-shadow: 0 8px 30px rgba(91, 79, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-card h3 {
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-size: 1.6rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-card p {
+            color: #64748B;
+            position: relative;
+            z-index: 1;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: var(--white);
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-2);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .footer-section p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+        }
+
+        .footer-bottom p {
+            margin: 0.5rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+
+            .nav-menu.active {
+                max-height: 500px;
+            }
+
+            .nav-menu a {
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .news-grid,
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 4rem 1.5rem;
+            }
+
+            .popup-content {
+                padding: 2rem;
+            }
+
+            .popup-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="logo">Вестник Й. Йовков</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero">Начало</a></li>
+                <li><a href="#news">Статии</a></li>
+                <li><a href="#team">Екип</a></li>
+                <li><a href="#footer">Контакти</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-decorative"></div>
+        <div class="hero-decorative"></div>
+        <div class="hero-content">
+            <h1>Училищен вестник</h1>
+            <p>Гласът на учениците от СУ "Йордан Йовков" – Сливен</p>
+        </div>
+    </section>
+
+    <section class="container" id="news">
+        <div class="section-header">
+            <h2 class="section-title">Последни статии</h2>
+            <p class="section-subtitle">Важните събития от живота на нашето училище</p>
+        </div>
+        <div class="news-grid">
+            <div class="news-card" data-article="1">
+                <div class="news-card-content">
+                    <span class="news-date">Ноември 2024</span>
+                    <h3>45 години училище</h3>
+                    <p>С тържествена церемония и концерт нашето училище отбеляза своята 45-годишнина.</p>
+                    <span class="read-more">Прочети повече →</span>
+                </div>
+            </div>
+
+            <div class="news-card" data-article="2">
+                <div class="news-card-content">
+                    <span class="news-date">24 май 2024</span>
+                    <h3>Ден на будителите</h3>
+                    <p>Училището ни организира вълнуващо тържество с рецитали на стихове, изложби и множество ученически инициативи.</p>
+                    <span class="read-more">Прочети повече →</span>
+                </div>
+            </div>
+
+            <div class="news-card" data-article="3">
+                <div class="news-card-content">
+                    <span class="news-date">2024/2025</span>
+                    <h3>Успехи в състезания</h3>
+                    <p>Наши ученици постигнаха отлични резултати в областни и национални олимпиади.</p>
+                    <span class="read-more">Прочети повече →</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ЕКИП -->
+    <section class="container" id="team">
+        <div class="section-header">
+            <h2 class="section-title">Екипът на вестника</h2>
+            <p class="section-subtitle">Учениците, които стоят зад всяко издание</p>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">A</div>
+                <h3>Веселин Стоянов</h3>
+                <p>Старши програмист</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">M</div>
+                <h3>Калоян Георгиев</h3>
+                <p>Фотограф и репортер</p>
+            </div>
+
+            <div class="team-card">
+                <div class="team-avatar">E</div>
+                <h3>Никола Георгиев</h3>
+                <p>Дизайн и оформление</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- POPUP МОДАЛ -->
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <button class="popup-close" id="popupClose">×</button>
+            <span class="popup-date" id="popupDate"></span>
+            <h3 class="popup-title" id="popupTitle"></h3>
+            <p class="popup-text" id="popupText"></p>
+
+            <div class="popup-details" id="popupDetails"></div>
+        </div>
+    </div>
+
+    <!-- ФУТЪР -->
+    <footer class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Училищен вестник</h3>
+                <p>Официалният глас на учениците от СУ „Йордан Йовков“ – Сливен.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Контакти</h3>
+                <p>Имейл: info-2000114@edu.mon.bg</p>
+                <p>Адрес: ж.к Българка 8800 Сливен</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Социални мрежи</h3>
+                <p>Sooner or later</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2024–2025 СУ „Йордан Йовков“ – Сливен. Всички права запазени.</p>
+            <p>Автор Веселин Стоянов</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // MOBILE MENU
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // POPUP ARTICLES
+        const articles = {
+            1: {
+                date: "Ноември 2024",
+                title: "45 години училище",
+                text: "През 2024 година нашето училище отбеляза своя 45-годишен юбилей. Събитието бе посрещнато с тържествен концерт, изложби, презентации и много емоции.",
+                details: [
+                    "Тържествен концерт в актовата зала",
+                    "Изложба със снимки от историята на училището",
+                    "Срещи с бивши учители и ученици"
+                ]
+            },
+            2: {
+                date: "24 май 2024",
+                title: "Ден на будителите",
+                text: "На 24 май в училището се проведе тържество с рецитали, музикални изпълнения и изложби, подготвени от учениците.",
+                details: [
+                    "Рецитали на произведения от български автори",
+                    "Тематични изложби",
+                    "Участие на всички класове"
+                ]
+            },
+            3: {
+                date: "2024/2025",
+                title: "Успехи в състезания",
+                text: "През учебната година ученици от нашето училище се класираха на призови места в множество състезания и олимпиади.",
+                details: [
+                    "Първи места в областни олимпиади",
+                    "Национални отличия",
+                    "Развитие в STEM направления"
+                ]
+            }
+        };
+
+        const popup = document.getElementById('popup');
+        const popupClose = document.getElementById('popupClose');
+        const popupDate = document.getElementById('popupDate');
+        const popupTitle = document.getElementById('popupTitle');
+        const popupText = document.getElementById('popupText');
+        const popupDetails = document.getElementById('popupDetails');
+
+        document.querySelectorAll('.news-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const id = card.getAttribute('data-article');
+                const article = articles[id];
+
+                popupDate.textContent = article.date;
+                popupTitle.textContent = article.title;
+                popupText.textContent = article.text;
+
+                popupDetails.innerHTML =
+                    "<h4>Допълнителна информация</h4><ul>" +
+                    article.details.map(item => `<li>${item}</li>`).join('') +
+                    "</ul>";
+
+                popup.classList.add('active');
+            });
+        });
+
+        popupClose.addEventListener('click', () => {
+            popup.classList.remove('active');
+        });
+
+        popup.addEventListener('click', (e) => {
+            if (e.target === popup) popup.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
